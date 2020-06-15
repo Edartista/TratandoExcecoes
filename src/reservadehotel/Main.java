@@ -5,7 +5,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Scanner;
 
-public class ReservaDeHotel {
+public class Main {
     public static void main(String[] args) throws ParseException {
 
         Scanner teclado = new Scanner(System.in);
@@ -32,20 +32,16 @@ public class ReservaDeHotel {
             System.out.print("Check-out [dd/MM/aaaa]: ");
             checkOut = sdf.parse(teclado.next());
             
-            Date agora = new Date();
-            
-            if (checkIn.before(agora) || checkOut.before(agora)){
-                System.out.println("Erro na reserva: para atualizar é preciso digitar datas futuras.");
-            }
-            else if (!checkOut.after(checkIn)){
-                System.out.println("Erro na reserva: é preciso digitar datas futuras.");
+
+            String erro = reserva.atualizarDatas(checkIn, checkOut);
+            if(erro != null){
+                System.out.println(erro);
             }
             else{
-            reserva.atualizarDatas(checkIn, checkOut);
-            System.out.println("\nReserva: \n" + reserva);
+            System.out.println("\nReserva atualizada: \n" + reserva);
             }
-        }
+        
         teclado.close();
     }
-    
+    }
 }
