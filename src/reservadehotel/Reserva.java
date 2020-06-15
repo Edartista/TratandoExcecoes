@@ -1,5 +1,6 @@
 package reservadehotel;
 
+import Excecoes.DomínioExceção;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
@@ -15,6 +16,9 @@ public class Reserva {
     }
     
     public Reserva(Integer numeroQuarto, Date checkIn, Date checkOut) {
+        if (!checkOut.after(checkIn)){
+            throw new DomínioExceção ("Erro na reserva: a data de entrada é preciso ser anterior à saída.");
+        }
         this.numeroQuarto = numeroQuarto;
         this.checkIn = checkIn;
         this.checkOut = checkOut;
@@ -41,18 +45,17 @@ public class Reserva {
         return TimeUnit.DAYS.convert(diferença, TimeUnit.MILLISECONDS);
     }
     
-    public String atualizarDatas(Date checkIn, Date checkOut){
+    public void atualizarDatas(Date checkIn, Date checkOut){
         Date agora = new Date();
-            if (checkIn.before(agora) || checkOut.before(agora)){
-                return "Erro na reserva: para atualizar é preciso digitar datas futuras.";
-            }
-            if (!checkOut.after(checkIn)){
-                return "Erro na reserva: a data de entrada é preciso ser anterior à saída.";
-            }
-        
+        if (checkIn.before(agora) || checkOut.before(agora)){
+            throw new DomínioExceção ("Erro na reserva: para atualizar é preciso digitar datas futuras.");
+        }
+        if (!checkOut.after(checkIn)){
+            throw new DomínioExceção ("Erro na reserva: a data de entrada é preciso ser anterior à saída.");
+        }
+
         this.checkIn = checkIn;
         this.checkOut = checkOut;
-        return null;
     }
     
     @Override
